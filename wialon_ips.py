@@ -65,7 +65,7 @@ def main():
 			if 'presets' in conf and type(conf['presets']) is dict:
 				LAST_PRESETS = conf['presets']
 				if len(LAST_PRESETS):
-					load_preset = prompt(dict(message=f'Load from preset', type='list', choices=['no', 'yes'], name='load_preset'))['load_preset']
+					load_preset = prompt(dict(message='Load from preset', type='list', choices=['no', 'yes'], name='load_preset'))['load_preset']
 					if load_preset == 'yes':
 						choosen_preset = prompt(dict(message='Choose preset', type='list', choices=LAST_PRESETS, name='choosen_preset'))['choosen_preset']
 						if len(choosen_preset):
@@ -136,7 +136,7 @@ def main():
 		TRACK_SRC_TYPE = SETTINGS['track_src_type']
 		TRACK_SRC = SETTINGS['track_src']
 	except Exception as e:
-		print(f'Settings are invalid: {e}')
+		print('Settings are invalid: ' + str(e))
 		sys.exit()
 
 	TRACK_DATA = None
@@ -145,13 +145,13 @@ def main():
 			with open(TRACK_SRC) as f:
 				TRACK_DATA = f.readlines()
 		except Exception as e:
-			print(f'Failed to get track data from specified source {TRACK_SRC} ({TRACK_SRC_TYPE}): {e}')
+			print('Failed to get track data from specified source {0} ({1}): {2}'.format(TRACK_SRC, TRACK_SRC_TYPE, e))
 	elif TRACK_SRC_TYPE == 'URL':
 		try:
 			r = requests.get(TRACK_SRC)
 			TRACK_DATA = r.text.split()
 		except Exception as e:
-			print(f'Failed to get track data from specified source {TRACK_SRC} ({TRACK_SRC_TYPE}): {e}')
+			print('Failed to get track data from specified source {0} ({1}): {2}'.format(TRACK_SRC, TRACK_SRC_TYPE, e))
 
 	if not TRACK_DATA:
 		sys.exit()
@@ -184,7 +184,7 @@ def main():
 
 			json.dump(new_config, cf)
 	except Exception as e:
-		print(f'Failed to save update config: {e}')
+		print('Failed to save update config: ' + str(e))
 
 	def parse_line(input_line):
 		res = re.search(r'(\d+.\d+),(?!A)(\D),(\d+.\d+),(\D)', input_line)
@@ -204,9 +204,9 @@ def main():
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.connect((ENDPOINT, PORT))
 
-		print(f'Connected to {s.getpeername()}')
+		print('Connected to {0}'.format(s.getpeername()))
 
-		print(f'Sending login message')
+		print('Sending login message')
 		sent = s.send(LOGIN_MESSAGE)
 		data = s.recv(1024)
 		if data.decode('utf-8').startswith('#AL#1'):
