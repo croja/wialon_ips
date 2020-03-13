@@ -64,7 +64,7 @@ try:
 		if 'presets' in conf and type(conf['presets']) is dict:
 			LAST_PRESETS = conf['presets']
 			if len(LAST_PRESETS):
-				load_preset = prompt(dict(message=f'Load from preset', type='list', choices=['no', 'yes'], name='load_preset'))['load_preset']
+				load_preset = prompt(dict(message='Load from preset', type='list', choices=['no', 'yes'], name='load_preset'))['load_preset']
 				if load_preset == 'yes':
 					choosen_preset = prompt(dict(message='Choose preset', type='list', choices=LAST_PRESETS, name='choosen_preset'))['choosen_preset']
 					if len(choosen_preset):
@@ -105,7 +105,7 @@ else:
 	SETTINGS['uid'] = prompt(uid_q)['uid']
 	if len(SETTINGS['uid']):
 		LAST_UID = SETTINGS['uid']
-	
+
 	# ASKING SRC
 	SETTINGS['track_src_type'] = prompt(dict(message='Track source type', type='list', choices=['URL', 'File'], name='track_src_type'))['track_src_type']
 	src_q = dict(name='src', type='input')
@@ -135,7 +135,7 @@ try:
 	TRACK_SRC_TYPE = SETTINGS['track_src_type']
 	TRACK_SRC = SETTINGS['track_src']
 except Exception as e:
-	print(f'Settings are invalid: {e}')
+	print('Settings are invalid: ' + str(e))
 	sys.exit()
 
 TRACK_DATA = None
@@ -144,13 +144,13 @@ if TRACK_SRC_TYPE == 'File':
 		with open(TRACK_SRC) as f:
 			TRACK_DATA = f.readlines()
 	except Exception as e:
-		print(f'Failed to get track data from specified source {TRACK_SRC} ({TRACK_SRC_TYPE}): {e}')
+		print('Failed to get track data from specified source {0} ({1}): {3}'.format(TRACK_SRC, TRACK_SRC_TYPE, e))
 elif TRACK_SRC_TYPE == 'URL':
 	try:
 		r = requests.get(TRACK_SRC)
 		TRACK_DATA = r.text.split()
 	except Exception as e:
-		print(f'Failed to get track data from specified source {TRACK_SRC} ({TRACK_SRC_TYPE}): {e}')
+		print('Failed to get track data from specified source {0} ({1}): {3}'.format(TRACK_SRC, TRACK_SRC_TYPE, e))
 
 if not TRACK_DATA:
 	sys.exit()
@@ -166,7 +166,7 @@ try:
 			new_config['last_src_path'] = LAST_SRC_PATH
 		if LAST_SRC_URL:
 			new_config['last_src_url'] = LAST_SRC_URL
-		
+
 		new_presets = None
 		if LAST_PRESETS:
 			new_presets = LAST_PRESETS
@@ -177,13 +177,13 @@ try:
 				if len(preset_name):
 					new_presets = new_presets or dict()
 					new_presets[preset_name] = SETTINGS
-		
+
 		if new_presets:
 			new_config["presets"] = new_presets
 
 		json.dump(new_config, cf)
 except Exception as e:
-	print(f'Failed to save update config: {e}')
+	print('Failed to save update config: {e}')
 
 def parse_line(input_line):
 	res = re.search(r'(\d+.\d+),(?!A)(\D),(\d+.\d+),(\D)', input_line)
@@ -203,9 +203,9 @@ if PROTOCOL == 'TCP':
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.connect((ENDPOINT, PORT))
 
-	print(f'Connected to {s.getpeername()}')
+	print('Connected to {0}'.format(s.getpeername()))
 
-	print(f'Sending login message')
+	print('Sending login message')
 	sent = s.send(LOGIN_MESSAGE)
 	data = s.recv(1024)
 	if data.decode('utf-8').startswith('#AL#1'):
@@ -237,4 +237,3 @@ elif PROTOCOL == 'UDP':
 			# data = sock.recv(400)
 			# print(data)
 			time.sleep(float(INTERVAL))
-

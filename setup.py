@@ -15,7 +15,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/croja/wialon_ips",
     py_modules=["wialon_ips"],
-    python_requires=">=3.6",
+    python_requires=">=3.5",
     install_requires=['requests', 'PyInquirer', 'appdirs'],
     entry_points={
         "console_scripts": [
