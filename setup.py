@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="wialon_ips",
-    version="0.0.1",
+    version="0.0.3",
     author="Sergey Shevchik",
     author_email="sergey.shevchik@gmail.com",
     description="Simple Wialon IPs protocol emulator",
