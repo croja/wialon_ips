@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="wialon_ips",
-    version="0.0.3",
+    version="0.0.4",
     author="Sergey Shevchik",
     author_email="sergey.shevchik@gmail.com",
     description="Simple Wialon IPs protocol emulator",
@@ -19,7 +19,7 @@ setuptools.setup(
     install_requires=['requests', 'PyInquirer', 'appdirs'],
     entry_points={
         "console_scripts": [
-            "wialon_ips = wialon_ips"
+            "wialon_ips = wialon_ips:main"
         ]
     }
 )
